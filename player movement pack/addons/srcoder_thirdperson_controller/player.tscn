@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgaexk2mqn6j8"]
+
+[ext_resource type="Script" uid="uid://dc6wnxmharfhe" path="res://player movement pack/addons/srcoder_thirdperson_controller/assets/player.gd" id="1_4s81h"]
+[ext_resource type="PackedScene" uid="uid://ccf670c6bkob8" path="res://player movement pack/addons/srcoder_thirdperson_controller/assets/character-male-e.glb" id="1_jt3wm"]
+[ext_resource type="Script" uid="uid://bhiotbp0j05u1" path="res://player movement pack/addons/srcoder_thirdperson_controller/assets/camera_pivot.gd" id="3_0ffrl"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_71pwh"]
+radius = 0.224641
+height = 0.761555
+
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_exdnv"]
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("1_4s81h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36393, 0)
+shape = SubResource("CapsuleShape3D_71pwh")
+
+[node name="camera_pivot" type="Node3D" parent="."]
+script = ExtResource("3_0ffrl")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="camera_pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.512907, 0)
+shape = SubResource("SeparationRayShape3D_exdnv")
+spring_length = 3.0
+
+[node name="Camera3D" type="Camera3D" parent="camera_pivot/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00789595, 0)
+
+[node name="playermodel" type="Node3D" parent="."]
+
+[node name="character-male-e2" parent="playermodel" instance=ExtResource("1_jt3wm")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.0071882, 0)
+
+[editable path="playermodel/character-male-e2"]

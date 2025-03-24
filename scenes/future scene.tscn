@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8umifm4dqt7i"]
+
+[ext_resource type="PackedScene" uid="uid://dgaexk2mqn6j8" path="res://player movement pack/addons/srcoder_thirdperson_controller/player.tscn" id="1_rypji"]
+[ext_resource type="PackedScene" uid="uid://bg533qr3ie4xw" path="res://scenes/future-map.tscn" id="2_y5r4a"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6p0qb"]
+sky_top_color = Color(0.223197, 5.39064e-05, 0.805136, 1)
+sky_horizon_color = Color(0.725417, 1.82897e-06, 0.315942, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.72549, 0, 0.317647, 1)
+ground_curve = 0.15
+
+[sub_resource type="Sky" id="Sky_tjsg2"]
+sky_material = SubResource("ProceduralSkyMaterial_6p0qb")
+
+[sub_resource type="Environment" id="Environment_tya1n"]
+background_mode = 2
+sky = SubResource("Sky_tjsg2")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="future scene" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tya1n")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.913993, -0.396779, 0.0847551, -0.294445, 0.792384, 0.534256, -0.27914, 0.46335, -0.841063, 0, 0, 0)
+light_energy = 0.5
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_rypji")]
+
+[node name="future-map" parent="." instance=ExtResource("2_y5r4a")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)

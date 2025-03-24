@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://7cw0h1v7ryt4"]
-
-[ext_resource type="PackedScene" uid="uid://cycp6u2w53ocp" path="res://Models/Teslabot 2.glb" id="1_adlmx"]
-
-[node name="AuxScene" instance=ExtResource("1_adlmx")]

@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://icqv8ostj6dm"]
+
+[ext_resource type="PackedScene" uid="uid://dgaexk2mqn6j8" path="res://player movement pack/addons/srcoder_thirdperson_controller/player.tscn" id="1_nib2p"]
+[ext_resource type="PackedScene" uid="uid://cs7fba8qbcs80" path="res://scenes/retro-map.tscn" id="2_p26n1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5agdc"]
+sky_top_color = Color(0.20029, 0.626471, 0.772349, 1)
+sky_horizon_color = Color(0.754731, 0.629466, 1, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.752941, 0.631373, 1, 1)
+
+[sub_resource type="Sky" id="Sky_e2kwn"]
+sky_material = SubResource("ProceduralSkyMaterial_5agdc")
+
+[sub_resource type="Environment" id="Environment_b5w4t"]
+background_mode = 2
+sky = SubResource("Sky_e2kwn")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="retro scene" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_b5w4t")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_nib2p")]
+transform = Transform3D(1, 0, 0, 0, 0.91302, -0.407916, 0, 0.407916, 0.91302, 0, 0.571061, 0.255137)
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_p26n1")]
