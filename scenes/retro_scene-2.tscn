@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://c7631fxkfw4y3"]
+
+[ext_resource type="PackedScene" uid="uid://dgaexk2mqn6j8" path="res://player movement pack/addons/srcoder_thirdperson_controller/player.tscn" id="1_6i6sa"]
+[ext_resource type="PackedScene" uid="uid://c4bnaa88is70q" path="res://scenes/map-custom-made.tscn" id="2_k1pd4"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_k1pd4"]
+sky_top_color = Color(7.70092e-07, 0.590086, 0.913516, 1)
+sky_horizon_color = Color(0.666994, 0.78315, 0.848652, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.666667, 0.784314, 0.847059, 1)
+ground_curve = 0.0750001
+
+[sub_resource type="Sky" id="Sky_kpa1b"]
+sky_material = SubResource("ProceduralSkyMaterial_k1pd4")
+
+[sub_resource type="Environment" id="Environment_3rhor"]
+background_mode = 2
+sky = SubResource("Sky_kpa1b")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="retro scene" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3rhor")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.951716, -0.199946, -0.232935, -0.172957, -0.277644, 0.944987, -0.253619, 0.939646, 0.229656, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_6i6sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.530541, 0)
+
+[node name="custom made map" parent="." instance=ExtResource("2_k1pd4")]
