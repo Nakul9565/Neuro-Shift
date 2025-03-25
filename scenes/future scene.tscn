@@ -1,7 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8umifm4dqt7i"]
+[gd_scene load_steps=10 format=3 uid="uid://b8umifm4dqt7i"]
 
 [ext_resource type="PackedScene" uid="uid://dgaexk2mqn6j8" path="res://player movement pack/addons/srcoder_thirdperson_controller/player.tscn" id="1_rypji"]
+[ext_resource type="AudioStream" uid="uid://bv46kokkxkol8" path="res://Sounds/2.wav" id="2_kfqjk"]
 [ext_resource type="PackedScene" uid="uid://bg533qr3ie4xw" path="res://scenes/future-map.tscn" id="2_y5r4a"]
+[ext_resource type="AudioStream" uid="uid://bhbj8al1xuguh" path="res://Sounds/person-running-loop-245173.mp3" id="3_4q0vn"]
+[ext_resource type="AudioStream" uid="uid://dc8r1p3ysphmx" path="res://Sounds/268640__zagi2__retro-action-groove.wav" id="5_xwx0r"]
+[ext_resource type="Script" uid="uid://cqdqmyr1sv6ro" path="res://scenes/bgm_player.gd" id="6_albse"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6p0qb"]
 sky_top_color = Color(0.223197, 5.39064e-05, 0.805136, 1)
@@ -32,5 +36,20 @@ shadow_enabled = true
 [node name="Player" parent="." instance=ExtResource("1_rypji")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.44128, 2.0985, 14.1161)
 
+[node name="JumpSound" type="AudioStreamPlayer3D" parent="Player"]
+stream = ExtResource("2_kfqjk")
+
+[node name="RunSound" type="AudioStreamPlayer3D" parent="Player"]
+stream = ExtResource("3_4q0vn")
+volume_db = 4.571
+unit_size = 1.0
+max_distance = 10.0
+
 [node name="future-map" parent="." instance=ExtResource("2_y5r4a")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_xwx0r")
+volume_db = -7.0
+autoplay = true
+script = ExtResource("6_albse")
