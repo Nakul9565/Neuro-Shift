@@ -5,13 +5,16 @@ extends CharacterBody3D
 @export var jump_velocity := 4.5
 const ROTATION_SPEED := 6.0
 
-#slowly rotate the charcter to point in the direction of the camera_pivot
 @onready var camera_pivot : Node3D = $camera_pivot
 @onready var playermodel : Node3D = $playermodel
 
-enum animation_state {IDLE,RUNNING,JUMPING}
+enum animation_state {IDLE, RUNNING, JUMPING}
 var player_animation_state : animation_state = animation_state.IDLE
 @onready var animation_player : AnimationPlayer = $"playermodel/character-male-e2/AnimationPlayer"
+
+# Jump and Run Sounds
+@onready var jump_sound : AudioStreamPlayer3D = $JumpSound
+@onready var run_sound : AudioStreamPlayer3D = $RunSound
 
 var is_cursor_locked = true  # Track cursor state
 
@@ -36,37 +39,41 @@ func unlock_cursor():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
+	# Add gravity
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-		
 
-	# Handle jump.
+	# Handle jump
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = jump_velocity
-		#player_animation_state = animation_state.JUMPING
-		
+		if jump_sound:
+			jump_sound.play()
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
+	# Get the input direction
 	var input_dir := Input.get_vector("left", "right", "up", "down")
 	var direction = (camera_pivot.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
-		#now rotate the model
 		rotate_model(direction, delta)
-		player_animation_state = animation_state.RUNNING
+
+		if is_on_floor():  # Only play run sound if the player is on the ground
+			player_animation_state = animation_state.RUNNING
+			if not run_sound.playing:
+				run_sound.play()
+		else:
+			player_animation_state = animation_state.JUMPING
+			run_sound.stop()
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
 		player_animation_state = animation_state.IDLE
-	
-	if not is_on_floor():
-		player_animation_state = animation_state.JUMPING
+		run_sound.stop()
 	
 	move_and_slide()
-	#tell the playeranimationcontroller about the animation state
+
+	# Play animations based on state
 	match player_animation_state:
 		animation_state.IDLE:
 			animation_player.play("idle")
@@ -75,7 +82,6 @@ func _physics_process(delta: float) -> void:
 		animation_state.JUMPING:
 			animation_player.play("jump")
 
-	
 func rotate_model(direction: Vector3, delta : float) -> void:
-	#rotate the model to match the springarm
+	# Rotate the model to match the movement direction
 	playermodel.basis = lerp(playermodel.basis, Basis.looking_at(direction), 10.0 * delta)
