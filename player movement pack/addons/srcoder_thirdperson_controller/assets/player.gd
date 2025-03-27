@@ -23,14 +23,26 @@ func _ready():
 	lock_cursor()
 
 func _input(event):
+	# Toggle cursor lock/unlock with ESC
 	if event is InputEventKey:
 		if event.pressed and event.keycode == KEY_ESCAPE:
-			# Toggle cursor lock state
 			is_cursor_locked = not is_cursor_locked
 			if is_cursor_locked:
 				lock_cursor()
 			else:
 				unlock_cursor()
+		
+		# Check for Shift + T to change scene
+		if event.pressed and event.keycode == KEY_T and event.shift_pressed:
+			change_scene("res://scenes/future scene.tscn")
+
+func change_scene(scene_path: String) -> void:
+	# Ensure the scene exists before switching
+	if ResourceLoader.exists(scene_path):
+		get_tree().change_scene_to_file(scene_path)
+	else:
+		print("Error: Scene not found - " + scene_path)
+
 
 func lock_cursor():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
