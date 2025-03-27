@@ -1,0 +1,68 @@
+[gd_scene load_steps=12 format=3 uid="uid://ctjglw1eg48qu"]
+
+[ext_resource type="PackedScene" uid="uid://dgaexk2mqn6j8" path="res://player movement pack/addons/srcoder_thirdperson_controller/player.tscn" id="1_6i6sa"]
+[ext_resource type="PackedScene" uid="uid://c4bnaa88is70q" path="res://scenes/map-custom-made.tscn" id="2_k1pd4"]
+[ext_resource type="AudioStream" uid="uid://bv46kokkxkol8" path="res://Sounds/2.wav" id="2_kpa1b"]
+[ext_resource type="AudioStream" uid="uid://bhbj8al1xuguh" path="res://Sounds/person-running-loop-245173.mp3" id="3_3rhor"]
+[ext_resource type="AudioStream" uid="uid://irqiau50i7rh" path="res://Sounds/759243__lolamoore__serene-background-atmosphere.mp3" id="5_ahuog"]
+[ext_resource type="Script" uid="uid://cqdqmyr1sv6ro" path="res://scenes/bgm_player.gd" id="6_sj4og"]
+[ext_resource type="Script" uid="uid://cy5uy0tugxa51" path="res://kill_zone.gd" id="7_sj4og"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_k1pd4"]
+sky_top_color = Color(7.70092e-07, 0.590086, 0.913516, 1)
+sky_horizon_color = Color(0.666994, 0.78315, 0.848652, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.666667, 0.784314, 0.847059, 1)
+ground_curve = 0.0750001
+
+[sub_resource type="Sky" id="Sky_kpa1b"]
+sky_material = SubResource("ProceduralSkyMaterial_k1pd4")
+
+[sub_resource type="Environment" id="Environment_3rhor"]
+background_mode = 2
+sky = SubResource("Sky_kpa1b")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ahuog"]
+size = Vector3(1.62015, 1, 0.586502)
+
+[node name="retro scene" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3rhor")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.951716, -0.199946, -0.232935, -0.172957, -0.277644, 0.944987, -0.253619, 0.939646, 0.229656, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_6i6sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.530541, -22.8357)
+collision_layer = 1
+
+[node name="JumpSound" type="AudioStreamPlayer3D" parent="Player"]
+stream = ExtResource("2_kpa1b")
+
+[node name="RunSound" type="AudioStreamPlayer3D" parent="Player"]
+stream = ExtResource("3_3rhor")
+unit_size = 1.0
+max_distance = 10.0
+
+[node name="custom made map" parent="." instance=ExtResource("2_k1pd4")]
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ahuog")
+volume_db = -7.0
+autoplay = true
+script = ExtResource("6_sj4og")
+
+[node name="kill zone" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -12.6518)
+collision_layer = 2
+script = ExtResource("7_sj4og")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kill zone"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -0.178593, 2.48942, -5.8483)
+shape = SubResource("BoxShape3D_ahuog")
+
+[connection signal="body_entered" from="kill zone" to="kill zone" method="_on_body_entered"]
